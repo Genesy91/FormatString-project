@@ -5,16 +5,19 @@
 
 
 int main(void) {
-  // int *a;
-  // int b=2;
-  // a = &b;
-  // printf("ggwpn %d\n", 2);
-
   FILE *fp;
+  char *str_s;
+  char *str_sn;
+  size_t sn_len = 8;
 
-   fp = fopen ("file.txt", "a");
-   fprintf(fp, "ggwp%d", 2);
-   fclose(fp);
-  //printf("ggwp %%nfff");
+  fp = fopen ("file.txt", "a");
+  printf("A robot may not injure a human bein%c\n", 'g');
+  fprintf(fp, "A robot may not injure a human bein%c\n", 'g');
+  /*sprintf(str_s, "A robot may not injure a human bein%c\n", 'g');
+  puts(str_s);
+  snprintf(str_sn, sn_len, "A robot may not injure a human bein%c\n", 'g');
+  puts(str_sn);*/
+  fclose(fp);
+
   return 0;
 }

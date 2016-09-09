@@ -1,54 +1,79 @@
 #include <dlfcn.h>
 #include <string.h>
 #include <stdarg.h>
-//#include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int (*real_printf)(const char *format, ...);
-int (*real_vprintf)(const char *format, va_list ap);
-int (*real_fprintf)(void *stream, const char *format, ...);
+int (*real_fprintf)(FILE *stream, const char *format, ...);
 int (*real_sprintf)(char *str, const char *format, ...);
 int (*real_snprintf)(char *str, size_t size, const char *format, ...);
 
-char *percn = "gg";
-const char *i;
+const char *i, *error;
+void *handler;
+va_list argument_list;
+
+
 
 int printf (const char *format, ...) {
-  void *handler;
-  va_list argument_list;
-
-  handler = dlopen("libc.so.6", RTLD_LAZY);
-  real_printf = dlsym(handler, "printf");
-  real_vprintf = dlsym(handler, "printf");
+  int numofchar;
   for (i=format; *i; i++){
-    real_printf("i punta a: %s\n", i);
     if (*i == '%'){
-      real_printf("trovato perc\n");
       i++;
-      real_printf("i punta a: %s\n", i);
       if(*i == 'n'){
-        real_printf("ffpls\n");
-        //syslog
-        break;
+        exit(1);
+        /*trovato*/
       }
     }
   }
-  real_printf("passo finale:\n");
+  handler = dlopen("libc.so.6", RTLD_LAZY);
+  if (!handler) {
+    fputs(dlerror(), stderr);
+    exit(1);
+  }
+  dlerror();
+  real_printf = dlsym(handler, "vprintf");
+  if ((error = dlerror())) {
+    fputs(error, stderr);
+    exit(1);
+  }
   va_start(argument_list, format);
-  real_printf(format);
+  numofchar = real_printf(format, argument_list);
   va_end(argument_list);
+  dlclose(handler);
+  return numofchar;
 }
 
-int fprintf(void *stream, const char *format, ...){
-  void *handler;
+
+
+
+int fprintf(FILE *stream, const char *format, ...){
+  int numofchar;
+  for (i=format; *i; i++){
+    if (*i == '%'){
+      i++;
+      if(*i == 'n'){
+        exit(1);
+        /*trovato*/
+      }
+    }
+  }
   handler = dlopen("libc.so.6", RTLD_LAZY);
-  // real_printf = dlsym(handler, "printf");
-  // real_printf("cazzone");
-  real_fprintf = dlsym(handler, "fprintf");
-  //real_fprintf = dlsym(handler, "FILE");
-  real_fprintf(stream,"ffpls");
-
-  return 0;
-
+  if (!handler) {
+    fputs(dlerror(), stderr);
+    exit(1);
+  }
+  dlerror();
+  real_fprintf = dlsym(handler, "vfprintf");
+  if ((error = dlerror())) {
+    fputs(error, stderr);
+    exit(1);
+  }
+  va_start(argument_list, format);
+  numofchar = real_fprintf(stream, format, argument_list);
+  va_end(argument_list);
+  dlclose(handler);
+  return numofchar;
 }
 
 int sprintf(char *str, const char *format, ...){
