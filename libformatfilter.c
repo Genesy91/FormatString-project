@@ -25,8 +25,9 @@ int printf (const char *format, ...) {
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        syslog(LOG_WARNING, "%m");
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in printf\n");
       }
     }
   }
@@ -57,8 +58,9 @@ int fprintf(FILE *stream, const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in fprintf\n");
       }
     }
   }
@@ -89,8 +91,9 @@ int sprintf(char *str, const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in srintf\n");
       }
     }
   }
@@ -121,8 +124,9 @@ int snprintf(char *str, size_t size, const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in snprintf\n");
       }
     }
   }
@@ -152,8 +156,9 @@ int scanf(const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in scanf\n");
       }
     }
   }
@@ -183,8 +188,9 @@ int fscanf(FILE *stream, const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in fscanf\n");
       }
     }
   }
@@ -214,8 +220,9 @@ int sscanf(const char *str, const char *format, ...){
     if (*i == '%'){
       i++;
       if(*i == 'n'){
-        exit(1);
-        /*trovato*/
+        //exit(1);
+        openlog(NULL, LOG_PID, LOG_USER);
+        syslog(LOG_WARNING, "WARNING: %%n found in sscanf\n");
       }
     }
   }

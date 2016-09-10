@@ -50,7 +50,13 @@ int main(void) {
   printf("The first word in str_s string is: %s\nsscanf returned: %d\n", scan_word, return_value);
 
   //%n tests
-  //printf("%n", &percn);
+  printf("%n", &percn);
+  fprintf(fp, "%n", &percn);
+  sprintf(str_s, "%n", &percn);
+  snprintf(str_sn, sn_len, "%n", &percn);
+  scanf("%n", &percn);
+  fscanf(fp, "%n", &percn);
+  sscanf(str_s, "%n", &percn);
 
   fclose(fp);
   return 0;
