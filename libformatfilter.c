@@ -93,7 +93,7 @@ int sprintf(char *str, const char *format, ...){
       if(*i == 'n'){
         //exit(1);
         openlog(NULL, LOG_PID, LOG_USER);
-        syslog(LOG_WARNING, "WARNING: %%n found in srintf\n");
+        syslog(LOG_WARNING, "WARNING: %%n found in sprintf\n");
       }
     }
   }
