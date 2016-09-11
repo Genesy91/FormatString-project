@@ -1,3 +1,12 @@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// @@@  This library wraps all the functions from the printf and scanf families.   @@@
+// @@@  Its purpose is to catch dangerous format strings containing the %n format  @@@
+// @@@  specifier or the $ sign. When one of these is found, the user is asked     @@@
+// @@@  to choose to terminate the program or call the original function.          @@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Davide Macchi - 760461@@@@@
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@POLIMI - Piattaforme software per la rete MOD2@@@@@
+
 #include <dlfcn.h>
 #include <string.h>
 #include <stdarg.h>
@@ -59,14 +68,16 @@ void n_found () {
   char x;
   puts("WARNING: dangerous use of a format strig detected! Press [x] to continue or any other key to exit");
   real_scanf = get_function("scanf");
-  int j = real_scanf("%c", &x);
-  if (x != 'x') exit(1);
+  real_scanf(" %c", &x);
+  if (x != 'x'){
+    exit(1);
+  }
 }
 
 int printf (const char *format, ...) {
   int numofchar;
   if (find_n(format)){
-    syslog(LOG_WARNING, "WARNING: %%n found in printf\n");
+    syslog(LOG_WARNING, "[printf]WARNING: this format string is dangerous\n     %s", format);
     n_found();
   }
   real_printf = get_function("vprintf");
@@ -79,10 +90,12 @@ int printf (const char *format, ...) {
 
 
 
-
 int fprintf(FILE *stream, const char *format, ...){
   int numofchar;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in fprintf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[fprintf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_fprintf = get_function("vfprintf");
   va_start(argument_list, format);
   numofchar = real_fprintf(stream, format, argument_list);
@@ -96,7 +109,10 @@ int fprintf(FILE *stream, const char *format, ...){
 
 int sprintf(char *str, const char *format, ...){
   int numofchar;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in sprintf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[sprintf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_sprintf = get_function("vsprintf");
   va_start(argument_list, format);
   numofchar = real_sprintf(str, format, argument_list);
@@ -110,7 +126,10 @@ int sprintf(char *str, const char *format, ...){
 
 int snprintf(char *str, size_t size, const char *format, ...){
   int numofchar;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in snprintf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[snprintf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_snprintf = get_function("vsnprintf");
   va_start(argument_list, format);
   numofchar = real_snprintf(str, size, format, argument_list);
@@ -123,7 +142,10 @@ int snprintf(char *str, size_t size, const char *format, ...){
 
 int scanf(const char *format, ...){
   int numofinputs;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in scanf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[scanf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_scanf = get_function("vscanf");
   va_start(argument_list, format);
   numofinputs = real_scanf(format, argument_list);
@@ -136,7 +158,10 @@ int scanf(const char *format, ...){
 
 int fscanf(FILE *stream, const char *format, ...){
   int numofinputs;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in fscanf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[fscanf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_fscanf = get_function("vfscanf");
   va_start(argument_list, format);
   numofinputs = real_fscanf(stream, format, argument_list);
@@ -149,7 +174,10 @@ int fscanf(FILE *stream, const char *format, ...){
 
 int sscanf(const char *str, const char *format, ...){
   int numofinputs;
-  if (find_n(format)) syslog(LOG_WARNING, "WARNING: %%n found in sscanf\n");
+  if (find_n(format)){
+    syslog(LOG_WARNING, "[sscanf]WARNING: this format string is dangerous\n     %s", format);
+    n_found();
+  }
   real_sscanf = get_function("vsscanf");
   va_start(argument_list, format);
   numofinputs = real_sscanf(str, format, argument_list);

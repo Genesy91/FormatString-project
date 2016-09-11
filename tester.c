@@ -1,3 +1,7 @@
+/*This is a script that aims to show the behaviour of libformatfilter.so library
+with different types of format string containing the %n specifier or the $ sign
+or without them*/
+
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,9 +20,9 @@ int main(int argc, char *argv[]) {
   int percn;
   long int lpercn;
 
-  fp = fopen ("file.txt", "w+");
+  fp = fopen ("testfile-libformatfilter.txt", "w+");
 
-  //printf test
+  //printf test with a 3 characters conversion specification
   return_value = printf("PRINT: A robot may not injure a human bein%lc\n", 'g');
   printf("printf returned: %d\n", return_value);
 
@@ -36,7 +40,7 @@ int main(int argc, char *argv[]) {
   puts(str_sn);
   printf("snprintf returned: %d\n", return_value);
 
-  //scanf test
+  //scanf test with two conversion specification
   puts("Type an int and a char : ");
   return_value = scanf("%d %c", &scan_intarg, &scan_chararg);
   printf("You typed: %d, %c\nscanf returned: %d\n", scan_intarg, scan_chararg, return_value);
@@ -50,9 +54,14 @@ int main(int argc, char *argv[]) {
   return_value = sscanf(str_s, "%s", scan_word);
   printf("The first word in str_s string is: %s\nsscanf returned: %d\n", scan_word, return_value);
 
-  //%n tests
+
+  //$ test
   printf("catch test %2$d %1$d\n", 1, 2);
+
+  //%n test with a 2 characters conversion specification
   fprintf(fp, "catch test %ln", &lpercn);
+
+  //%n tests
   sprintf(str_s, "catch test %n", &percn);
   snprintf(str_sn, sn_len, "catch test %n", &percn);
   scanf("%n", &percn);
