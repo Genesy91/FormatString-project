@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 
-int main(void) {
+int main(int argc, char *argv[]) {
   FILE *fp;
   char str_s[100];
   char str_sn[100];
@@ -14,11 +14,12 @@ int main(void) {
   char scan_chararg;
   char scan_word[20];
   int percn;
+  long int lpercn;
 
   fp = fopen ("file.txt", "w+");
 
   //printf test
-  return_value = printf("PRINT: A robot may not injure a human bein%c\n", 'g');
+  return_value = printf("PRINT: A robot may not injure a human bein%lc\n", 'g');
   printf("printf returned: %d\n", return_value);
 
   //fprintf test
@@ -50,10 +51,10 @@ int main(void) {
   printf("The first word in str_s string is: %s\nsscanf returned: %d\n", scan_word, return_value);
 
   //%n tests
-  printf("%n", &percn);
-  fprintf(fp, "%n", &percn);
-  sprintf(str_s, "%n", &percn);
-  snprintf(str_sn, sn_len, "%n", &percn);
+  printf("catch test %2$d %1$d\n", 1, 2);
+  fprintf(fp, "catch test %ln", &lpercn);
+  sprintf(str_s, "catch test %n", &percn);
+  snprintf(str_sn, sn_len, "catch test %n", &percn);
   scanf("%n", &percn);
   fscanf(fp, "%n", &percn);
   sscanf(str_s, "%n", &percn);
